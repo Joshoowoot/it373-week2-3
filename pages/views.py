@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from pages.models import Post
 
 # Create your views here.
 def home(request):
@@ -26,3 +27,11 @@ def page_not_found_view(request, exception):
 
 def server_error_view(request):
     return render(request, '500.html', status=500)
+
+def posts_list(request):
+    posts = Post.objects.all().order_by('-created_at').prefetch_related('comments')
+    context = {
+        'posts': posts,
+        'title': 'Posts List'
+        }
+    return render(request, 'posts_list.html', context)
