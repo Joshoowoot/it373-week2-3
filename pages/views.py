@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponseBadRequest
 from pages.models import Post
 
 # Create your views here.
@@ -35,3 +36,13 @@ def posts_list(request):
         'title': 'Posts List'
         }
     return render(request, 'posts_list.html', context)
+
+def post_create(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        body = request.POST.get('body')
+        if not title or not body:
+            return HttpResponseBadRequest("Title and body are required.")
+        Post.objects.create(title=title, body=body)
+        return redirect('posts_list')
+    return render(request, 'post_form.html')

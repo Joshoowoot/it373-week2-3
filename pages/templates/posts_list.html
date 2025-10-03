@@ -7,22 +7,14 @@
 {% block content %}
     <h1>Posts List </h1>
     <h2>Total Posts: ({{ posts.count }})</h2>
-    {% for post in posts %}
-        <article>
-            <h3>{{ post.title }}</h3>
-            <small>Posted on: {{ post.created_at|timesince }} ago</small>
-            <p>{{ post.body }}</p>
-            <h4>Comments: ({{ post.comments.count }})</h4>
-            <ul>
-                {% for comment in post.comments.all %}
-                    <li> <strong>{{ comment.author }}:</strong> {{ comment.text }} | {{ comment.created_at|timesince }} ago</li>
-            {% empty %}
-                <p>No comments yet po.</p>
-            </ul>
-            {% endfor %}
-        </article>
-        <hr>
-    {% empty %}
-        <p>No posts available.</p>
-    {% endfor %}
+    <ul>
+        {% for post in posts %}
+            <li>
+                <h3>{{ post.title }}</h3>
+            </li>
+        {% empty %}
+            <p>No posts available.</p>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'post_create' %}">Create</a>
 {% endblock content %}
